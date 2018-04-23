@@ -1,0 +1,38 @@
+version: '3.3'
+
+services:
+    data:
+        image: stellar/stellar-core-state:latest
+        env_file:
+            - ./env/core_minimal.env
+        volumes:
+            - data:/data
+            - sockets:/postgresql-unix-sockets
+        ports:
+            - "5000:5432"
+        deploy:
+            placement:
+                constraints: [node.role == manager]
+    
+    core:
+        image: stellar/stellar-core:9.2.0-551-7561c1d5
+        env_vile:
+            - ./env/core_minimal.env
+        volumes:
+            - data:/data
+            - sockets:/postgresql-unix-sockets
+        ports:
+            - "11625:11625"
+            - "11626:11626"
+        
+    web:
+        image: TODO:image
+        env_file:
+            - ./env/shared.env
+        ports:
+            - "80:8000"
+
+volumes:
+    data:
+    sockets:
+
