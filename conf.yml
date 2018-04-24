@@ -16,10 +16,11 @@ services:
     
     core:
         image: stellar/stellar-core:9.2.0-551-7561c1d5
+        depends_on:
+            - data
         env_file:
             - ./env/core_minimal.env
-        command:
-            - /bin/bash -c "/start newdb"
+        command: /start core_minimal fresh
         volumes:
             - data:/data
             - sockets:/postgresql-unix-sockets
@@ -27,19 +28,21 @@ services:
             - "11625:11625"
             - "11626:11626"
         
-    web:
-        image: matheusbcomp/stellar-docker:latest
-        env_file:
-            - ./env/shared.env
-        entryoint:
-            - start.sh
-        volumes:
-            - ./web:/code
-        ports:
-            - "80:8000"
-        deploy:
-            placement:
-                constraints: [node.role == manager]
+#    web:
+#        image: matheusbcomp/stellar-docker:latest
+#        depends_on:
+#            - core
+#        env_file:
+#            - ./env/shared.env
+#        entrypoint:
+#            - ./start.sh
+#        volumes:
+#            - ./web:/code
+#        ports:
+#            - "80:8000"
+#        deploy:
+#            placement:
+#                constraints: [node.role == manager]
 
 volumes:
     data:
