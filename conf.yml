@@ -26,7 +26,7 @@ services:
             - "11626:11626"
         
     web:
-        image: TODO:image
+        image: matheusbcomp/stellar-docker:latest
         env_file:
             - ./env/shared.env
         ports:
